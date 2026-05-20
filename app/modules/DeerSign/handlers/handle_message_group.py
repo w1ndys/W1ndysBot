@@ -19,6 +19,7 @@ from .. import (
     MODULE_NAME,
     RANK_COMMAND,
     SIGN_COMMAND,
+    SIGN_COMMAND_ALIASES,
     SWITCH_NAME,
 )
 from .data_manager import DataManager
@@ -55,7 +56,7 @@ class GroupMessageHandler:
             if not is_group_switch_on(self.group_id, MODULE_NAME):
                 return
 
-            if self._matches_command(SIGN_COMMAND):
+            if self._matches_any_command(SIGN_COMMAND_ALIASES):
                 await self._handle_sign()
             elif self._matches_command(MAKEUP_COMMAND):
                 await self._handle_makeup()
@@ -87,10 +88,13 @@ class GroupMessageHandler:
 
     def _is_business_command(self) -> bool:
         commands = (SIGN_COMMAND, MAKEUP_COMMAND, CALENDAR_COMMAND, RANK_COMMAND, ASSIST_COMMAND, BAN_COMMAND)
-        return any(self._matches_command(command) for command in commands)
+        return self._matches_any_command(SIGN_COMMAND_ALIASES) or any(self._matches_command(command) for command in commands[1:])
 
     def _matches_command(self, command: str) -> bool:
         return self.raw_message == command or self.raw_message.startswith(f"{command} ")
+
+    def _matches_any_command(self, commands: tuple[str, ...]) -> bool:
+        return any(self._matches_command(command) for command in commands)
 
     async def _handle_sign(self):
         target_id = self._first_at_user() or self.user_id
@@ -248,8 +252,8 @@ class GroupMessageHandler:
     def _help_text(self) -> str:
         return (
             "鹿管签到帮助\n"
-            "鹿：自己签到\n"
-            "鹿 @用户：帮别人签到\n"
+            "鹿/挖/扣/抠：自己签到\n"
+            "鹿/挖/扣/抠 @用户：帮别人签到\n"
             "补鹿 <日期>：补签本月过去日期\n"
             "鹿历 / 鹿历 @用户：查看本月签到日历\n"
             "鹿榜：查看本群本月排行榜\n"

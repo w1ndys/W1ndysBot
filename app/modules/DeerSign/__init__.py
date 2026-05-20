@@ -10,6 +10,7 @@ DATA_DIR = os.path.join("data", MODULE_NAME)
 os.makedirs(DATA_DIR, exist_ok=True)
 
 SIGN_COMMAND = "鹿"
+SIGN_COMMAND_ALIASES = ("鹿", "挖", "扣", "抠")
 MAKEUP_COMMAND = "补鹿"
 CALENDAR_COMMAND = "鹿历"
 RANK_COMMAND = "鹿榜"
@@ -19,7 +20,7 @@ BAN_COMMAND = "禁鹿"
 
 COMMANDS = {
     SWITCH_NAME: "群管理员开关鹿管签到模块",
-    SIGN_COMMAND: "自己签到，用法：鹿；代签用法：鹿 @用户",
+    SIGN_COMMAND: "自己签到，用法：鹿/挖/扣/抠；代签用法：鹿/挖/扣/抠 @用户",
     MAKEUP_COMMAND: "补签本月过去日期，用法：补鹿 <日期>",
     CALENDAR_COMMAND: "查看签到日历，用法：鹿历；查看他人：鹿历 @用户",
     RANK_COMMAND: "查看本群本月签到排行榜",
